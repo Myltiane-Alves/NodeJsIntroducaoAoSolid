@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { User } from "../../model/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
@@ -10,7 +12,14 @@ class CreateUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ email, name }: IRequest): User {
-    // Complete aqui
+    const userAllreadyExists = this.usersRepository.findByEmail(email);
+
+    if(userAllreadyExists) {
+      throw new Error("Mensagem do erro");
+    }
+
+    const user = this.usersRepository.create({ email, name});
+    return user;
   }
 }
 
